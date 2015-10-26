@@ -202,7 +202,7 @@ for s=1:length(allsubj)
     
     %% Michel and Ralph!
 %     So this is where I am up to with this analysis. And this is where I pass
-%     if over for you guys to have some fun with.... :-D
+%     it over for you guys to have some fun with.... :-D
 %     WHAT WE NEED:
 %     So in the EEG data from each electrode (1:65), on each participant (1:24), 
 %     we need to extract the EEG power spectrum (1Hz - 35Hz) seperately for 
