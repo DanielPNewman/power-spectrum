@@ -6,4 +6,6 @@ Don't forget that you'll have to download the EEGLAB toolbox for matlab because 
 The other few files in this repo (e.g. loadbvSK_DN, etc.) are needed because they are called by  power_spectrum.m
 
 So, you’ll have to learn how to use github. If I were you I’d download and install the github-desktop user-interface from here  https://desktop.github.com/  There are detailed instructions on how to use it here https://help.github.com/desktop/guides/getting-started/ 
-So once you have set up gitbub, you’ll need to “Fork” this repository over into your own repository to make changes  
+So once you have set up gitbub, you’ll need to “Fork” this repository over into your own repository, and then clone it to your desktop before you can make changes.
+
+:-D
