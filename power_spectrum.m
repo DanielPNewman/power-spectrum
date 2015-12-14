@@ -213,10 +213,12 @@ for s=1:length(allsubj)
 %     You'll see I've just started playing around with fft, but I will now pass it
 %     over to you guys to have some fun with:
     
-        FFT_amplitude_spectrum = abs(fft(EEG.data(:,stimes(targtrigs(1)):stimes(targtrigs(end)))'))'; % FFT amplitude spectrum
+        FFT_amplitude_spectrum (s,LC,:,:) = abs(fft(EEG.data(:,stimes(targtrigs(1)):stimes(targtrigs(end)))'))'; % FFT amplitude spectrum
         Frequency_scale = [0:size(FFT_amplitude_spectrum,2)-1]*EEG.srate/size(FFT_amplitude_spectrum,2); % Frequency scale
         chanVar = mean(FFT_amplitude_spectrum(:,find(Frequency_scale>speclims(1) & Frequency_scale<speclims(2))),2);       % ROW of average variances for each channel 
-        
+         test=(FFT_amplitude_spectrum(:,find(Frequency_scale>speclims(1) & Frequency_scale<speclims(2))));
+         plot(test(25,:))%just choose channel 25 (Pz)
+         
 % By the way Michel and Ralph, for now we will pull out at the data from 
 %     all 65 channels, but if you want to just look at one channel to see 
 %     if the plots look reasonable, then channel number [25] is a good one
