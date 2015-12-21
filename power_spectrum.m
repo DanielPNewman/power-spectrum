@@ -4,7 +4,7 @@ clc
 
 %change
 
-path='C:\Users\newmand\Dropbox\Monash\PhD\Blue Light\Data\';
+path='D:\Monash\Semester 2\Internship\BlueLightData\';
 % path='C:\Users\Dan\Dropbox\Monash\PhD\Blue Light\Data\';
 
 subject_folder = {'BL1','BL2','BL3','BL4','BL5','BL6','BL7','BL8','BL9','BL10','BL11','BL12','BL13','BL14','BL15','BL16','BL17','BL18','BL19','BL20','BL21','BL22','BL23','BL24'};
@@ -215,14 +215,53 @@ for s=1:length(allsubj)
     
         FFT_amplitude_spectrum = abs(fft(EEG.data(:,stimes(targtrigs(1)):stimes(targtrigs(end)))'))'; % FFT amplitude spectrum
         Frequency_scale = [0:size(FFT_amplitude_spectrum,2)-1]*EEG.srate/size(FFT_amplitude_spectrum,2); % Frequency scale
-        chanVar = mean(FFT_amplitude_spectrum(:,find(Frequency_scale>speclims(1) & Frequency_scale<speclims(2))),2);       % ROW of average variances for each channel 
-%          test=(FFT_amplitude_spectrum(:,find(Frequency_scale>speclims(1) & Frequency_scale<speclims(2))));
-
-         plot(Frequency_scale,FFT_amplitude_spectrum(25,:));%just choose channel 25 (Pz)
+        %chanVar = mean(FFT_amplitude_spectrum(:,find(Frequency_scale>speclims(1) & Frequency_scale<speclims(2))),2);       % ROW of average variances for each channel 
+         test=(FFT_amplitude_spectrum(:,find(Frequency_scale>speclims(1) & Frequency_scale<speclims(2))));
+         %plot(test(25,:))%just choose channel 25 (Pz)
+         plot(test)
          
-         plot(Frequency_scale,FFT_amplitude_spectrum(25,:));
          
+         
+   %%      
+period=0.2; % Frequency period
+Frequency_Limit=35;
+[b,a]=butter(2,0.004); % Parameters of the Butterworth filter 
+%  The cutoff frequency Wn must be 0.0 < Wn < 1.0, with 1.0 corresponding
+%  to half the sample rate defined as 500 Hz. This way the cutoff frequency
+%  was set by Wn = 2*w/500. W is the non normalized cutoff frequency and it
+%  was empirically defined as 1 Hz.
+Filtered_FFT=filtfilt(b,a,FFT_amplitude_spectrum(25,:)); % This function applys the butterworth parameters to the desired signal
+%figure(1)
+%plot(Frequency_scale,abs(Filtered_FFT),'b','LineWidth',3)
+% hold on
+% plot(Frequency_scale,FFT_amplitude_spectrum(25,:),'r.','MarkerSize',0.01)
+% legend('Filtered FFT','Raw FFT')
+% xlabel('Frequency(Hz)')
+% ylabel('MicroVolts')
 
+limit_vectorPos=Frequency_Limit/(Frequency_scale(2)-Frequency_scale(1)); % Position of the last data in the vector according to the chosen frequency limit
+step=round((limit_vectorPos+1)/Frequency_Limit*period); % Period across the vector
+newFreq_scale=zeros(Frequency_Limit/period); % Allocation of variables
+newFFT_amplitude_spectrum=zeros(Frequency_Limit/period);
+newFFT_amplitude_spectrum2=zeros(Frequency_Limit/period);
+newfiltro=zeros(Frequency_Limit/period);
+for i=1:Frequency_Limit/period         
+    newFreq_scale(i)=Frequency_scale(i*step); % Assigning data to the new vectors for a limited and compressed FFT version.
+    newFFT_amplitude_spectrum(i)=FFT_amplitude_spectrum(25,i*step);
+    newFFT_amplitude_spectrum2(i)=Filtered_FFT(i*step);
+    newfiltro(i)=Filtered_FFT(i*step);
+end
+
+
+figure(2)
+plot(newFreq_scale,newFFT_amplitude_spectrum,'r')
+hold on
+plot(newFreq_scale,newFFT_amplitude_spectrum2,'g+')
+legend('Limited filtered FFT', 'Limited raw FFT')
+ %%        
+
+test=0;
+         
          
 % By the way Michel and Ralph, for now we will pull out at the data from 
 %     all 65 channels, but if you want to just look at one channel to see 
